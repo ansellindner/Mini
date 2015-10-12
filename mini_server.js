@@ -3,7 +3,6 @@ var http = require('http');
 var express = require('express');
 var path = require('path');
 var app = express();
-
 //================================ EXPRESS SETTINGS ==
 // templating engine
 app.set('view engine', 'ejs');
