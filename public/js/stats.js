@@ -29,7 +29,10 @@ $( document ).ready(function() {
     var price;
     var genInfo;
     var blockDif;
-
+// Get External IP
+        $.getJSON('https://api.ipify.org/?format=json',function(ip){
+        $('#ip').html(ip.ip);
+        });
     console.log( "Bitcoin on your Mini is ready!" );
 
     // Main function to display data about your Mini and bitcoin network
@@ -38,11 +41,7 @@ $( document ).ready(function() {
         // Variable to your Mini's server
     	serveradd = window.location.host;
 
-        // Get External IP
-        $.getJSON('/myip.php',function(data){
-            //console.log(data);
-        	$('#ip').html(data);
-        });
+
 
         // Get data from your Mini bitcoind
         $.getJSON('http://bitcoinmini.com/nodeData/serveradd.php',function(data){
@@ -57,7 +56,7 @@ $( document ).ready(function() {
         });
 
         // Get the amount of time your Mini has been running
-        $.getJSON('http://'+serveradd+':2000/uptime',function(data){
+        $.getJSON('http://'+serveradd+'/api/uptime',function(data){
             //console.log(data);
     		var ut = data.split(" ");
     		var mins = (ut[0]/60).toFixed(0);
@@ -83,11 +82,6 @@ $( document ).ready(function() {
     	//	  $('#tx24').html(tx24.toLocaleString());
     	//});
 
-        // Get number of Peers
-    	$.getJSON('http://'+serveradd+':3000/api/btc/getpeerinfo',function(data){
-            //console.log(data);
-    		peerData = data;
-    	});
 
         // Get bitcoin price from theindex.io
     	$.getJSON('http://theindex.io/api/btc/index.php',function(data){
@@ -97,7 +91,7 @@ $( document ).ready(function() {
     	});
 
         // Get more bitcoin stats
-    	$.getJSON('http://'+serveradd+':3000/api/btc/getinfo',function(data){
+    	$.getJSON('http://'+serveradd+'/api/getInfo',function(data){
     		//console.log(data);
     		genInfo = data;
     		$('#version').html(genInfo['protocolversion']);
@@ -121,12 +115,12 @@ $( document ).ready(function() {
     // Buttons for restart, shutdown, and upgrade
     // TODO add a confirmation of user action
     $('#restart').click(function(){
-    	$.getJSON('http://'+serveradd+':2000/restart');
+    	$.getJSON('http://'+serveradd+'/api/restart');
     	alert('System Rebooting');
     });
 
     $('#shutdown').click(function(){
-    	$.getJSON('http://'+serveradd+':2000/shutdown');
+    	$.getJSON('http://'+serveradd+'/api/shutdown');
     	alert('System Shutting Down');
     });
 
